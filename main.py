@@ -4,7 +4,8 @@ from rich.console import Console
 import sys
 from ConsoleGreet.Greeter import loading_bar
 from Helpers import ExcelHelper
-from rich.progress import track
+from playsound import playsound
+
 
 console = Console()
 
@@ -84,13 +85,21 @@ def sub_main():
     loading_bar(Greeter.rev(Config.Heb_Loading_Data), 0.001)
     # If We Got Here - Promt "You Can Print Now"
     console.print(Greeter.rev(Config.Heb_Job_Finished), style=Config.Styles.BoldWhiteOnBlue)
+    # Promt Time
+    console.print(Greeter.print_time(), style=Config.Styles.BoldWhiteOnBlue)
+    # Play Sound
+    playsound('levelup.mp3')
+    print("\n")
     # Promt Ruler Line
     Greeter.ui_ruler(Config.Styles.BlueOnWhite, Greeter.rev(Config.Heb_Finish_Working))
     main()
 
 
 def main():
-    console.print(Greeter.rev(Config.Heb_Promt_Stand_By), style=Config.Styles.GreenOnWhite)
+    # Promt Credits
+    console.print(Config.VersionSettings.app_promt_details())
+    print("\n")
+    console.print(Greeter.rev(Config.Heb_Promt_Stand_By), style=Config.Styles.Green)
     user_input = input("\n>>>")
     if user_input == "":
         sub_main()

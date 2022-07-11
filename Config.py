@@ -37,7 +37,7 @@ class Styles:
 
 # App Settings
 CREATED_BY = "Kobi Gigi"
-APP_VERSION = "2.1"
+APP_VERSION = "3.0"
 
 # Hebrew Strings
 Heb_Searching = "מחפש"

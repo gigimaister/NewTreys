@@ -59,7 +59,7 @@ class MainJob:
         # Set If We Have More Than One Passports Page(4-9 Passports)
         if len(self.list_of_passports_objects) > 3 < 7:
             self.is_page2 = True
-        elif len(self.list_of_passports_objects) > 6:
+        if len(self.list_of_passports_objects) > 6:
             self.is_page3 = True
 
     def get_passports_to_job(self):

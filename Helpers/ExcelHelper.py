@@ -15,7 +15,7 @@ console = Console()
 
 # Number 0 Fill Format
 def ZFill(number):
-    """ Fill A Number With A Comma"""
+    """ Format A Number With A Comma"""
     try:
         return "{:,}".format(number)
     except Exception:
@@ -24,7 +24,7 @@ def ZFill(number):
 
 def get_excel_sheet_as_table_new(filename):
     """
-      Open Excel File With File Name && And Return Excel Table
+      Open Excel File With File Name && Return Excel Table
       """
     try:
         with open(filename, "rb") as f:

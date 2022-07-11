@@ -38,3 +38,9 @@ def ui_ruler(style, string):
 def loading_bar(string, t):
     for _ in track(range(100), description=f'[green]{string}'):
         sleep(t)
+
+
+def print_time():
+    today = datetime.datetime.now()
+    dt_string = today.strftime("%d/%m/%Y %H:%M:%S")
+    return dt_string

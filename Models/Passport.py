@@ -27,7 +27,7 @@ class Passport:
         self.job_num_of_magash = job_num_of_magash
 
     def set_hamama_and_gamlon(self, sheet):
-        #metzay = ExcelHelper.get_excel_sheet_as_table_new(Config.Files.METZAY)
+        # metzay = ExcelHelper.get_excel_sheet_as_table_new(Config.Files.METZAY)
         for row in sheet.iter_rows(min_row=3, values_only=True):
             try:
                 if int(row[XLMapping.PASSPORT]) == int(self.passport_num):
