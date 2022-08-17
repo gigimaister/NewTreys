@@ -4,11 +4,13 @@ import Classes
 from Classes import *
 from openpyxl import load_workbook, Workbook
 from ConsoleGreet import Greeter
+from Helpers import XLMapping
 from Helpers.XLMapping import *
 import Config
 from rich.console import Console
 
-from Models.Job import MainJob
+import Models.Job
+from Models.WpfPassport import WpfPassport
 
 console = Console()
 
@@ -30,6 +32,22 @@ def get_excel_sheet_as_table_new(filename):
         with open(filename, "rb") as f:
             in_mem_file = io.BytesIO(f.read())
         workbook = load_workbook(in_mem_file, read_only=True)
+        sheet = workbook.active
+
+        return sheet
+
+    except FileNotFoundError:
+        return False
+
+
+def get_excel_sheet_as_table_new_for_wpf(filename):
+    """
+      Open Excel File With File Name && Return Excel Table
+      """
+    try:
+        with open(filename, "rb") as f:
+            in_mem_file = io.BytesIO(f.read())
+        workbook = load_workbook(in_mem_file, read_only=True, data_only=True)
         sheet = workbook.active
 
         return sheet
@@ -63,10 +81,29 @@ def populate_jobs_from_xlsheet(sheet):
         # If Empty Row
         if row[0] is None or row[2] is None or row[6] is None:
             continue
-        job = MainJob(row[JOB_DATE], row[JOB_DRIVER], row[JOB_CX], row[JOB_GIDUL], row[JOB_ZAN], row[JOB_PLANTS],
-                      row[JOB_MAGASH], row[JOB_PASSPORT], row[JOB_AVG])
+        job = Models.Job.MainJob(row[JOB_DATE], row[JOB_DRIVER], row[JOB_CX], row[JOB_GIDUL], row[JOB_ZAN],
+                                 row[JOB_PLANTS],
+                                 row[JOB_MAGASH], row[JOB_PASSPORT], row[JOB_AVG])
         jobs.append(job)
     return jobs
+
+
+def get_wpf_passports(sheet):
+    """
+    Create WPF Passports Objects From Excel Sheet
+    """
+    Passports = []
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        try:
+            # If Empty Row
+            if row[XLMapping.TREYS] is None or row[XLMapping.TREYS] == "":
+                continue
+            Passport = WpfPassport(int(row[XLMapping.HAMAMA]), int(row[XLMapping.GAMLON]), row[XLMapping.PASSPORT],
+                                   int(row[XLMapping.TREYS]))
+            Passports.append(Passport)
+        except Exception:
+            continue
+    return Passports
 
 
 def write_jobs_to_bartender_file(filename, jobs, is_job_return=False):
@@ -159,6 +196,20 @@ def clean_sheet(filename):
     workbook.save(Config.Files.EXCEL_TO_BARTENDER)
 
 
+def write_jobs_to_wpf_file(filename, wpfGreenHouse):
+    """
+    Write WPF Passports To Excel File
+    """
+    workbook = load_workbook(filename)
+    sheet = workbook.active
+    counter = 1
+    for passport in wpfGreenHouse:
+        sheet[f"A{counter}"] = f"{int(passport.Hamama)}"
+        sheet[f"B{counter}"] = f"{int(passport.TotalNumOfMagash)}"
+        counter += 1
+    workbook.save(filename=filename)
+
+
 def return_job(filename, jobs):
     pass
 
@@ -206,8 +257,9 @@ def get_data_from_excel_file_Current(filename):
 
         jobs = []
         for row in sheet.iter_rows(min_row=2, values_only=True):
-            job = MainJob(row[JOB_DATE], row[JOB_DRIVER], row[JOB_CX], row[JOB_GIDUL], row[JOB_ZAN], row[JOB_PLANTS],
-                          row[JOB_MAGASH], row[JOB_PASSPORT], row[JOB_AVG])
+            job = Models.Job.MainJob(row[JOB_DATE], row[JOB_DRIVER], row[JOB_CX], row[JOB_GIDUL], row[JOB_ZAN],
+                                     row[JOB_PLANTS],
+                                     row[JOB_MAGASH], row[JOB_PASSPORT], row[JOB_AVG])
             if job.job_date is None or job.job_cx is None or job.job_magash is None:
                 continue
             jobs.append(job)

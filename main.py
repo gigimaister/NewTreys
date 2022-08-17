@@ -6,6 +6,7 @@ from ConsoleGreet.Greeter import loading_bar
 from Helpers import ExcelHelper
 from playsound import playsound
 
+from Models import WpfGreenHouse
 
 console = Console()
 
@@ -92,6 +93,22 @@ def sub_main():
     print("\n")
     # Promt Ruler Line
     Greeter.ui_ruler(Config.Styles.BlueOnWhite, Greeter.rev(Config.Heb_Finish_Working))
+
+    # !! WPF !!
+    # Get Metzay For Wpf Data
+    wpf_metzay = ExcelHelper.get_excel_sheet_as_table_new_for_wpf(Config.Files.METZAY)
+
+    # Get WpfPassport Obj For Wpd Excel Data
+    wpf_passports = ExcelHelper.get_wpf_passports(wpf_metzay)
+
+    # Clean wpf Sheet Before Writing To It
+    ExcelHelper.clean_sheet(Config.Files.EXCEL_TO_WPF)
+
+    # Get List Of WpfGreenHouse
+    wpf_green_list = WpfGreenHouse.get_list_ofwpfgreen(wpf_passports)
+
+    # Writing Into Excel Sheet
+    ExcelHelper.write_jobs_to_wpf_file(Config.Files.EXCEL_TO_WPF, wpf_green_list)
     main()
 
 

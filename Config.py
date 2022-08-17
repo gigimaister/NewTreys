@@ -20,6 +20,7 @@ class Files:
     FILE_TO_CREATE = "C:\\Users\\hamama2\\Desktop\\העתקת עבודות מטבלת הוצאות.xlsx"
     EXCEL_TO_BARTENDER = "J:\\קובי\\קובי\\DONOTTOUCH\\JOBSFORBARTENDER.xlsx"
     METZAY = "J:\\מצאי חממות חדש\\מצאי חממות חדש.xlsx"
+    EXCEL_TO_WPF = "J:\\קובי\\קובי\\DONOTTOUCH\\DONOTTOUCHWPF.xlsx"
 
 
 # Styles
